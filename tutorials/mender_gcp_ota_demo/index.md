@@ -1,8 +1,3 @@
-GCP IoT Solutions
-
-Mender.io over-the-air (OTA) software updates for embedded Linux with Google Cloud IoT Core
-
-[[TOC]]
 
 ## **Tutorial: Over-the-air software updates for embedded Linux with Mender.io on Google Cloud Platform**
 
@@ -120,14 +115,21 @@ This tutorial assumes you already have a Cloud Platform account set up and have 
 
 <table>
   <tr>
-    <td>gcloud compute firewall-rules create mender-ota-443 --allow tcp:443gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000</td>
+    <td>gcloud compute firewall-rules create mender-ota-443 --allow tcp:443
+gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000</td>
   </tr>
 </table>
 
 
 <table>
   <tr>
-    <td>export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"export CLOUD_REGION='us-central1'# Create 2 Cloud Storage buckets you will use for updates and storagegsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-servergsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
+    <td>export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
+export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
+export CLOUD_REGION='us-central1'
+
+# Create 2 Cloud Storage buckets you will use for updates and storage
+gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-server
+gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
   </tr>
 </table>
 
@@ -265,7 +267,11 @@ Download the newly built image to your local PC where you can write the image to
 
 <table>
   <tr>
-    <td># on OS X:diskutil unmountDisk /dev/disk3 (assuming /dev/disk 3 is SD card)# on Linux:umount <mount-path></td>
+    <td># on OS X:
+diskutil unmountDisk /dev/disk3 (assuming /dev/disk 3 is SD card)
+
+# on Linux:
+umount <mount-path></td>
   </tr>
 </table>
 
@@ -401,7 +407,9 @@ In the advanced filter text search field please enter the below filter and click
 
 <table>
   <tr>
-    <td>resource.type="cloudiot_device"(protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" ORprotoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")</td>
+    <td>resource.type="cloudiot_device"
+(protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" OR
+protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")</td>
   </tr>
 </table>
 
@@ -458,7 +466,10 @@ Let's set the environment variables for the functions. Please replace the IP add
 
 <table>
   <tr>
-    <td>export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe mender-ota-demo --project $PROJECT --format="value(networkInterfaces.accessConfigs[0].natIP)")firebase functions:config:set mender.url=https://$GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESSfirebase functions:config:set mender.username=mender@example.comfirebase functions:config:set mender.pw=mender_gcp_ota</td>
+    <td>export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe mender-ota-demo --project $PROJECT --format="value(networkInterfaces.accessConfigs[0].natIP)")
+firebase functions:config:set mender.url=https://$GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS
+firebase functions:config:set mender.username=mender@example.com
+firebase functions:config:set mender.pw=mender_gcp_ota</td>
   </tr>
 </table>
 
@@ -534,7 +545,9 @@ Now create an IoT Core Device with the public key (rsa_public.pem) which you ext
 
 <table>
   <tr>
-    <td>export REGISTRY_ID=mender-demoexport CLOUD_REGION=us-central1 # or change to an alternate region;export PROJECT=$(gcloud config list project --format "value(core.project)")</td>
+    <td>export REGISTRY_ID=mender-demo
+export CLOUD_REGION=us-central1 # or change to an alternate region;
+export PROJECT=$(gcloud config list project --format "value(core.project)")</td>
   </tr>
 </table>
 
