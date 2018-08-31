@@ -127,7 +127,7 @@ gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000</td>
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export CLOUD_REGION='us-central1'
 
-<td># Create 2 Cloud Storage buckets you will use for updates and storage
+<tr># Create 2 Cloud Storage buckets you will use for updates and storage
 gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-server
 gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
   </tr>
