@@ -31,3 +31,5 @@ IMAGE_INSTALL_append = " \
 
 inherit extrausers
 EXTRA_USERS_PARAMS = "usermod -P mender_gcp_ota root;"
+
+MENDER_DATA_PART_DIR = "${DEPLOY_DIR_IMAGE}/persist"

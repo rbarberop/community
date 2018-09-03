@@ -62,11 +62,7 @@ The following architecture diagram provides a high level overview of the various
 components on GCP to enable OTA updates with Mender and Google Cloud IOT Core
 </p>
 <p>
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on0.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on0.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <h4>Mender Management Server Deployment Options :</h4>
@@ -190,11 +186,7 @@ certificate warning and you will need to click "advanced" and "proceed". In an
 actual production environment, you would provision this server with a trusted
 certificate.</li></ul>
 <p>
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on1.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on1.png" width="" alt="alt_text" title="image_tooltip">
 </p><ul>
 <li>Once you are the Mender UI login screen please login using credentials
@@ -203,11 +195,7 @@ created in the above step which should take the Mender Dashboard.  <ul>
  <li>Password - mender_gcp_ota</li> </ul>
 </li> </ul>
 <p>
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on2.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on2.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -477,11 +465,7 @@ select the drop-down menu at the end of the search bar, and choose "Convert to
 advanced filter" as shown in the below image
 </p>
 <p>
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on3.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on3.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -494,11 +478,7 @@ In the advanced filter text search field please enter the below filter and click
 (protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" OR
 protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")</pre>
 <p>
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on4.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on4.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -506,11 +486,7 @@ Under "Edit Export" section provide a name for the sink, select sink service as
 "Cloud Pub/Sub" and Sink Destination as "registration-events" as shown below
 </p>
 <p>
-<p id="gdcalert6" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on5.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert7">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on5.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <h6>Step 3: Deploy Firebase Functions to call Mender Preauthorization API </h6>
@@ -653,11 +629,7 @@ You can confirm the same from the Google Cloud Console as below under latest
 activity.
 </p>
 <p>
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on6.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on6.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -670,11 +642,7 @@ Management Server on Google Cloud" and click on "Devices" to make sure you can
 see the Raspberry Pi3 device as shown below.
 </p>
 <p>
-<p id="gdcalert8" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on7.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert9">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on7.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -692,11 +660,7 @@ First lets download the mender artifact
 bucket and lets upload to the Mender Server under artifacts as shown below
 </p>
 <p>
-<p id="gdcalert9" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html
-alert: inline image link here (to images/Mender-on8.png). Store image on your
-image server and adjust path/filename if necessary. </span><br>(<a href="#">Back
-to top</a>)(<a href="#gdcalert10">Next alert</a>)<br><span style="color: red;
-font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on8.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -711,11 +675,7 @@ that Mender supports you can create groups and apply the target artifacts
 accordingly (Eg: Raspberry Pi3, Beaglebone etc)
 </p>
 <p>
-<p id="gdcalert10" ><span style="color: red; font-weight: bold">>>>>>
-gd2md-html alert: inline image link here (to images/Mender-on9.png). Store image
-on your image server and adjust path/filename if necessary. </span><br>(<a
-href="#">Back to top</a>)(<a href="#gdcalert11">Next alert</a>)<br><span
-style="color: red; font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on9.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -724,11 +684,7 @@ periodically. Progress can be monitored from the Mender Server Dashboard by
 clicking on in progress deployments
 </p>
 <p>
-<p id="gdcalert11" ><span style="color: red; font-weight: bold">>>>>>
-gd2md-html alert: inline image link here (to images/Mender-on10.png). Store
-image on your image server and adjust path/filename if necessary. </span><br>(<a
-href="#">Back to top</a>)(<a href="#gdcalert12">Next alert</a>)<br><span
-style="color: red; font-weight: bold">>>>>> </span></p>
+
 <img src="images/Mender-on10.png" width="" alt="alt_text" title="image_tooltip">
 </p>
 <p>
@@ -747,7 +703,4 @@ Core solution.
 <p>
 Since this tutorial uses multiple GCP components please ensure to delete the
 cloud resources once you are done with the tutorial.
-</p>
-<p>
-<a href="https://github.com/Kcr19/mender_gcp_ota_demo/issues">TODOS</a>
 </p>

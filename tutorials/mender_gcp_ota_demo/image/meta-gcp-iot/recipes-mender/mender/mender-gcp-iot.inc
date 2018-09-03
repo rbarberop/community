@@ -37,3 +37,12 @@ do_compile_prepend() {
 }
 
 RDEPENDS_${PN} += " bash openssl"
+
+inherit deploy
+
+do_deploy() {
+   install -d ${DEPLOYDIR}/persist/mender
+   mv ${D}${sysconfdir}/mender/mender.conf ${DEPLOYDIR}/persist/mender
+   ln -s /data/mender/mender.conf ${D}${sysconfdir}/mender/mender.conf
+}
+addtask do_deploy after do_install before do_package
