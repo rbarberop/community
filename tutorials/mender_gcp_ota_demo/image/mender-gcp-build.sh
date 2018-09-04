@@ -33,7 +33,7 @@ bitbake-layers add-layer -F ../meta-java
 bitbake-layers add-layer -F ../meta-raspberrypi
 bitbake-layers add-layer -F ../meta-mender/meta-mender-raspberrypi
 bitbake-layers add-layer -F ../meta-iot-cloud
-bitbake-layers add-layer -F ../community/tutorials/mender_gcp_ota/image/meta-gcp-iot
+bitbake-layers add-layer -F ../community/tutorials/mender_gcp_ota_demo/image/meta-gcp-iot
 cat > conf/auto.conf <<- EOF
 	MACHINE="raspberrypi3"
 	
