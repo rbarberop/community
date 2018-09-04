@@ -118,10 +118,10 @@ quickstart</a>. You need to associate Firebase to your cloud project. Visit the
 Firebase Console and choose to add a project. You can then choose to add
 Firebase to an existing Cloud Project.
 </p><ul>
-<li>Access to <a href="https://cloud.google.com/">Google Cloud Platform
-(GCP)</a>
-<li>Install the <a href="https://cloud.google.com/sdk/downloads">Google Cloud
-SDK </a>
+<li>A <a href="https://cloud.google.com/">Google Cloud Platform
+(GCP)</a> account
+<li>The <a href="https://cloud.google.com/sdk/downloads">Google Cloud
+SDK</a> installed
 <li>Demo environment variables from Google Cloud Shell or local terminal (Please
 use the below variables for every new session)
 <li>A public IP address assigned and ports 443 and 9000 publicly
