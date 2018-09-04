@@ -121,7 +121,7 @@ Firebase to an existing Cloud Project.
 <li>Access to <a href="https://cloud.google.com/">Google Cloud Platform
 (GCP)</a>
 <li>Install the <a href="https://cloud.google.com/sdk/downloads">Google Cloud
-SDK </a>if you prefer to use local terminal over Google Cloud Shell
+SDK </a>
 <li>Demo environment variables from Google Cloud Shell or local terminal (Please
 use the below variables for every new session)
 <li>A public IP address assigned and ports 443 and 9000 publicly
