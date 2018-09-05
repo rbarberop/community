@@ -51,9 +51,9 @@ The following architecture diagram provides a high level overview of the various
 
 There are several options for successfully setting up Mender services with Google Cloud Platform (GCP), this tutorial will use a minimally configured Mender Management Production Server to test the end to end workflow:
 
-* [Mender Management Demo Server](https://docs.mender.io/1.4/getting-started/create-a-test-environment) - For quickly testing the Mender server, Mender provides a  pre-built demo version that does not take into account production-grade issues like security and scalability
+* [Mender Management Demo Server](https://docs.mender.io/getting-started/create-a-test-environment) - For quickly testing the Mender server, Mender provides a  pre-built demo version that does not take into account production-grade issues like security and scalability
 
-* [Mender Management Production Server](https://docs.mender.io/1.4/administration/production-installation) - Mender Server for production environments, and includes security and reliability aspects of Mender production installations.
+* [Mender Management Production Server](https://docs.mender.io/administration/production-installation) - Mender Server for production environments, and includes security and reliability aspects of Mender production installations.
 
 * [Hosted Mender Service](https://mender.io/signup)  - Hosted Mender is a secure management service so you don't have to spend time maintaining security, certificates, uptime, upgrades and compatibility of the Mender server. Simply point your Mender clients to the Hosted Mender service.
 
@@ -137,7 +137,7 @@ gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
 
 ###### Installing Mender Management Server on GCP
 
-* Step 1: Create Google Cloud Compute Engine and runs a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/1.5/administration/production-installation).
+* Step 1: Create Google Cloud Compute Engine and runs a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
 
 <table>
   <tr>
@@ -243,7 +243,7 @@ Note that you are now switching to the "build server shell" environment, and not
 
 2. *gcp-mender-demo-image-raspberrypi3.mender - This will be the mender artifact file which you will upload to the mender server and deploy on the client as part of the OTA update process.*
 
-4. This completes the build process, the next step is to provision the build to [new device](https://docs.mender.io/1.2/artifacts/provisioning-a-new-device) (Raspberry Pi3). The build image was copied automatically to the GCS bucket which was created earlier. 
+4. This completes the build process, the next step is to provision the build to [new device](https://docs.mender.io/artifacts/provisioning-a-new-device) (Raspberry Pi3). The build image was copied automatically to the GCS bucket which was created earlier. 
 
 Download the newly built image to your local PC where you can write the image to SD card as outlined in the next step. Note: this is done only for the initial provisioning of the starter image to a new device. Updates from this point on are managed by Mender.
 
@@ -428,7 +428,7 @@ Under "Edit Export" section provide a name for the sink, select sink service as 
 
 Note: be sure you associated Firebase with your cloud project as noted in "Before you begin"
 
-Deploy Firebase Functions to subscribe to Pub/Sub topic "registration-events" which you created in the last step to [preauthorize](https://docs.mender.io/1.4/server-integration/preauthorizing-devices) IoT Core Devices with the Mender Server every time a new device is created in IoT Core
+Deploy Firebase Functions to subscribe to Pub/Sub topic "registration-events" which you created in the last step to [preauthorize](https://docs.mender.io/server-integration/preauthorizing-devices) IoT Core Devices with the Mender Server every time a new device is created in IoT Core
 
 Using an existing "cloud api shell" environment clone the source repository which contains the Firebase functions code
 
