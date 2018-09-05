@@ -232,7 +232,7 @@ def main():
     project_id = None
     cloud_region = None
     try:
-        with open("/opt/gcp/etc/gcp-config.sh","r") as config_file:
+        with open("/data/gcp/gcp-config.sh","r") as config_file:
             for line in config_file:
                 if "export REGISTRY_ID=" in line:
                     registry_id = line.replace("export REGISTRY_ID=", "").replace('"', "").strip()
@@ -272,7 +272,7 @@ def main():
             "/var/lib/mender/mender-agent.pem", #  private_key_file
             'RS256',
             #  TODO include this in bake at a different path
-            "/opt/gcp/etc/roots.pem",
+            "/data/gcp/roots.pem",
             "mqtt.googleapis.com",
             "443")
         return client
