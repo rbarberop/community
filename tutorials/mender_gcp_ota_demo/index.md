@@ -33,7 +33,7 @@ More information on Mender can be found [here](https://mender.io/) including [Wh
 
 * **Mender management server** - Mender Management Server, which is the central point for deploying updates to a population of devices. Among other things, it monitors the current software version that is installed on each device and schedules the rollout of new releases.
 
-* **Mender build system - **Software build system generates a new version of software for a device. The software build system is a standard component, such as the Yocto Project. It creates build artifacts in the format required by the target device. There will be different build artifacts for each type of device being managed.
+* **Mender build system** - Software build system generates a new version of software for a device. The software build system is a standard component, such as the Yocto Project. It creates build artifacts in the format required by the target device. There will be different build artifacts for each type of device being managed.
 
 * **Mender Client -** Each device runs a copy of the Mender update client, which polls the Management Server from time to time to report its status and to discover if there is a software update waiting. If there is, the update client downloads and installs it.
 
@@ -109,7 +109,8 @@ gcloud compute firewall-rules create mender-ota-443 --allow tcp:443
 gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000
 ```
 
-```export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
+```
+export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export CLOUD_REGION='us-central1'
 
