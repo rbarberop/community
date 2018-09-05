@@ -100,6 +100,10 @@ gcloud auth login
 ```
 
 ```
+gcloud config set project MY-PROJECT # replace with the name of your project
+```
+
+```
 gcloud services enable compute.googleapis.com
 ```
 
