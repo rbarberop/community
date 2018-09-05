@@ -72,12 +72,12 @@ Google Cloud Platform (GCP), this tutorial will use a minimally configured
 Mender Management Production Server to test the end to end workflow:
 </p><ul>
 <li><a
-href="https://docs.mender.io/1.4/getting-started/create-a-test-environment">Mender
+href="https://docs.mender.io/getting-started/create-a-test-environment">Mender
 Management Demo Server</a> - For quickly testing the Mender server, Mender
 provides a  pre-built demo version that does not take into account
 production-grade issues like security and scalability
 <li><a
-href="https://docs.mender.io/1.4/administration/production-installation">Mender
+href="https://docs.mender.io/administration/production-installation">Mender
 Management Production Server</a> - Mender Server for production environments,
 and includes security and reliability aspects of Mender production
 installations.
@@ -118,10 +118,10 @@ quickstart</a>. You need to associate Firebase to your cloud project. Visit the
 Firebase Console and choose to add a project. You can then choose to add
 Firebase to an existing Cloud Project.
 </p><ul>
-<li>Access to <a href="https://cloud.google.com/">Google Cloud Platform
-(GCP)</a>
-<li>Install the <a href="https://cloud.google.com/sdk/downloads">Google Cloud
-SDK </a>if you prefer to use local terminal over Google Cloud Shell
+<li>A <a href="https://cloud.google.com/">Google Cloud Platform
+(GCP)</a> account
+<li>The <a href="https://cloud.google.com/sdk/downloads">Google Cloud
+SDK</a> installed
 <li>Demo environment variables from Google Cloud Shell or local terminal (Please
 use the below variables for every new session)
 <li>A public IP address assigned and ports 443 and 9000 publicly
@@ -166,7 +166,7 @@ gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</pre>
 href="https://cloud.google.com/compute/docs/startupscript">startup script</a> to
 install various dependencies including Docker, as well as installing and
 starting the <a
-href="https://docs.mender.io/1.5/administration/production-installation">Mender
+href="https://docs.mender.io/administration/production-installation">Mender
 Server</a>.</li></ul>
 
 
@@ -303,7 +303,7 @@ artifact file which you will upload to the mender server and deploy on the
 client as part of the OTA update process.</em></li></ol>
 <ol>
 <li>This completes the build process, the next step is to provision the build to
-<a href="https://docs.mender.io/1.2/artifacts/provisioning-a-new-device">new
+<a href="https://docs.mender.io/artifacts/provisioning-a-new-device">new
 device</a> (Raspberry Pi3). The build image was copied automatically to the GCS
 bucket which was created earlier. </li></ol>
 <p>
@@ -497,7 +497,7 @@ Note: be sure you associated Firebase with your cloud project as noted in
 <p>
 Deploy Firebase Functions to subscribe to Pub/Sub topic "registration-events"
 which you created in the last step to <a
-href="https://docs.mender.io/1.4/server-integration/preauthorizing-devices">preauthorize</a>
+href="https://docs.mender.io/server-integration/preauthorizing-devices">preauthorize</a>
 IoT Core Devices with the Mender Server every time a new device is created in
 IoT Core
 </p>
