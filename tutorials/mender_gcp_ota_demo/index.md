@@ -150,7 +150,7 @@ Note: Please note the startup script will take roughly 3-5 minutes to completely
 
 * Step 2 : Navigate to the Mender UI by clicking on the external IP address of "mender-ota-demo" which can be found from the [GCP console → Compute Engine](https://console.cloud.google.com/compute). If you are using Chrome as your web browser you might get a certificate warning and you will need to click “advanced” and “proceed”. In an actual production environment, you would provision this server with a trusted certificate.
 
-![image alt text](image_1.png)
+![image alt text](images/Mender-on1.png)
 
 * Once you are the Mender UI login screen please login using credentials created in the above step which should take the Mender Dashboard. 
 
@@ -196,6 +196,7 @@ Use the *"cloud api shell" environment you used earlier.*
 2. SSH into the image and install the necessary updates required for the Yocto Project Builds
 
 <table>
+  
   <tr>
     <td>gcloud compute --project $PROJECT ssh --zone "us-central1-c" "mender-ota-build"</td>
   </tr>
