@@ -100,6 +100,10 @@ gcloud auth login
 ```
 
 ```
+gcloud config set project MY-PROJECT # replace with the name of your project
+```
+
+```
 gcloud services enable compute.googleapis.com
 ```
 
@@ -113,17 +117,18 @@ gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export CLOUD_REGION='us-central1'
+```
 
-#Create 2 Cloud Storage buckets you will use for updates and storage
+Create two Cloud Storage buckets you will use for updates and storage:
 
+```
 gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-server
-gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
-  ```
-
+gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds
+```
 
 ###### Installing Mender Management Server on GCP
 
-* Step 1: Create Google Cloud Compute Engine and runs a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
+* Step 1: Create a Google Cloud Compute Engine and run a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
 
 ```
 gcloud beta compute --project $PROJECT instances create "mender-ota-demo" --zone "us-central1-c" --machine-type "n1-standard-2" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --metadata=startup-script-url=https://raw.githubusercontent.com/Kcr19/community/master/tutorials/mender_gcp_ota_demo/server/mender_server_install.sh --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180814" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "mender-ota-demo"
