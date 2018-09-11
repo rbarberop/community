@@ -1,8 +1,6 @@
 #!/bin/bash
 #
 
-GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS="${GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS:-35.192.46.79}"
-
 sudo apt-get update
 sudo apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
      build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
@@ -47,7 +45,6 @@ cat > conf/auto.conf <<- EOF
 	INHERIT += "mender-full"
 	MENDER_ARTIFACT_NAME = "release-1"
 	MENDER_SERVER_URL = "https://mender.gcpotademo.com"
-	GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS = "${GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS}"
 	IMAGE_INSTALL_append = " kernel-image kernel-devicetree"
 	IMAGE_FSTYPES_append += " sdimg.bmap"
 	
