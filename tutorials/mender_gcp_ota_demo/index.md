@@ -277,7 +277,7 @@ chmod +x ./mender-artifact
 * Copy the file out of the SDIMG or MENDER binary file:
 
 ```
-./mender-artifact cat gcp-mender-demo-image-raspberrypi3.sdimg:/opt/gcp/etc/gcp-config.sh > ./gcp-config.sh
+./mender-artifact cat gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh > ./gcp-config.sh
 ```
 
 
@@ -286,7 +286,7 @@ chmod +x ./mender-artifact
 * Update the file in the SDIMG or MENDER binary file:
 
 ```
-cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/opt/gcp/etc/gcp-config.sh
+cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh
 ```
 
 
