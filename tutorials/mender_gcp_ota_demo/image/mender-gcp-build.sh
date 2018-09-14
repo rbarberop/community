@@ -12,7 +12,7 @@ cd poky
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-java ] || git clone -b rocko git://git.yoctoproject.org/meta-java
 [ -d meta-iot-cloud ] || git clone -b rocko https://github.com/intel-iot-devkit/meta-iot-cloud.git
-[ -d meta-gcp-iot ] || git clone -b mender-gcp https://github.com/Kcr19/community.git
+[ -d meta-gcp-iot ] || git clone -b master https://github.com/Kcr19/community.git
 source ./oe-init-build-env
 if [ -d ~/downloads ] ; then
     rm -rf ./downloads
