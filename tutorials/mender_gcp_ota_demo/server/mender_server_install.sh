@@ -23,7 +23,7 @@ cd mender-server
 git checkout -b my-production-setup
 cp -a template production
 cd production
-wget -O prod.yml https://raw.githubusercontent.com/Kcr19/mender_gcp_ota_demo/mender-gcp/server/prod.yml
+wget -O prod.yml https://raw.githubusercontent.com/Kcr19/community/master/tutorials/mender_gcp_ota_demo/server/prod.yml
 sed -i -e 's#/template/#/production/#g' prod.yml
 git config --global user.email "test@example.com"
 git config --global user.name test.mender "Test"
