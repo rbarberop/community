@@ -26,4 +26,4 @@
 
 set -ue
 
-echo "google_iot_id=g-$(cat /etc/machine-id)"
+echo "google_iot_id=g-$(cat /data/gcp/mender-google-machine-id)"

@@ -1,8 +1,6 @@
 #!/bin/bash
 #
 
-GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS="${GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS:-35.192.46.79}"
-
 sudo apt-get update
 sudo apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
      build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
@@ -14,7 +12,7 @@ cd poky
 [ -d meta-raspberrypi ] || git clone -b rocko https://github.com/agherzan/meta-raspberrypi
 [ -d meta-java ] || git clone -b rocko git://git.yoctoproject.org/meta-java
 [ -d meta-iot-cloud ] || git clone -b rocko https://github.com/intel-iot-devkit/meta-iot-cloud.git
-[ -d meta-gcp-iot ] || git clone -b mender-gcp https://github.com/Kcr19/community.git
+[ -d meta-gcp-iot ] || git clone -b master https://github.com/Kcr19/community.git
 source ./oe-init-build-env
 if [ -d ~/downloads ] ; then
     rm -rf ./downloads
@@ -47,7 +45,6 @@ cat > conf/auto.conf <<- EOF
 	INHERIT += "mender-full"
 	MENDER_ARTIFACT_NAME = "release-1"
 	MENDER_SERVER_URL = "https://mender.gcpotademo.com"
-	GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS = "${GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS}"
 	IMAGE_INSTALL_append = " kernel-image kernel-devicetree"
 	IMAGE_FSTYPES_append += " sdimg.bmap"
 	

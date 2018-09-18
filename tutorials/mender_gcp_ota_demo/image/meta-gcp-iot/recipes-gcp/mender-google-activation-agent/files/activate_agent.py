@@ -163,7 +163,7 @@ def get_client(
         algorithm, ca_certs, mqtt_bridge_hostname, mqtt_bridge_port):
     """Create our MQTT client. The client_id is a unique string that identifies
     this device. For Google Cloud IoT Core, it must be in the format below."""
-    with open("/etc/machine-id") as f:
+    with open("/data/gcp/mender-google-machine-id") as f:
         device_id = "g-%s" % f.readline().strip()
     print('projects/{}/locations/{}/registries/{}/devices/{}'
                        .format(
@@ -218,21 +218,16 @@ def main():
     while not os.path.exists("/var/lib/mender/mender-agent.pem"):
         time.sleep(1)
 
-    while not os.path.exists("/etc/machine-id"):
-        time.sleep(1)
-
-    if not os.path.exists("/data/machine-id"):
-        shutil.copy("/etc/machine-id", "/data/machine-id")
-        os.unlink("/etc/machine-id")
-        os.symlink("/data/machine-id", "/etc/machine-id")
-
-
+    if not os.path.exists("/data/gcp/mender-google-machine-id"):
+        while not os.path.exists("/etc/machine-id"):
+            time.sleep(1)
+        shutil.copy("/etc/machine-id", "/data/gcp/mender-google-machine-id")
 
     registry_id = None
     project_id = None
     cloud_region = None
     try:
-        with open("/opt/gcp/etc/gcp-config.sh","r") as config_file:
+        with open("/data/gcp/gcp-config.sh","r") as config_file:
             for line in config_file:
                 if "export REGISTRY_ID=" in line:
                     registry_id = line.replace("export REGISTRY_ID=", "").replace('"', "").strip()
@@ -272,7 +267,7 @@ def main():
             "/var/lib/mender/mender-agent.pem", #  private_key_file
             'RS256',
             #  TODO include this in bake at a different path
-            "/opt/gcp/etc/roots.pem",
+            "/data/gcp/roots.pem",
             "mqtt.googleapis.com",
             "443")
         return client

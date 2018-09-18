@@ -100,6 +100,10 @@ gcloud auth login
 ```
 
 ```
+gcloud config set project MY-PROJECT # replace with the name of your project
+```
+
+```
 gcloud services enable compute.googleapis.com
 ```
 
@@ -113,17 +117,18 @@ gcloud compute firewall-rules create mender-ota-9000 --allow tcp:9000
 export FULL_PROJECT=$(gcloud config list project --format "value(core.project)")
 export PROJECT="$(echo $FULL_PROJECT | cut -f2 -d ':')"
 export CLOUD_REGION='us-central1'
+```
 
-#Create 2 Cloud Storage buckets you will use for updates and storage
+Create two Cloud Storage buckets you will use for updates and storage:
 
+```
 gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-server
-gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds</td>
-  ```
-
+gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds
+```
 
 ###### Installing Mender Management Server on GCP
 
-* Step 1: Create Google Cloud Compute Engine and runs a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
+* Step 1: Create a Google Cloud Compute Engine and run a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
 
 ```
 gcloud beta compute --project $PROJECT instances create "mender-ota-demo" --zone "us-central1-c" --machine-type "n1-standard-2" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --metadata=startup-script-url=https://raw.githubusercontent.com/Kcr19/community/master/tutorials/mender_gcp_ota_demo/server/mender_server_install.sh --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180814" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "mender-ota-demo"
@@ -244,7 +249,7 @@ sudo dd if=/Users/<local PC path where you have your image downloaded>/gcp-mende
 ```
 
 
-##### {Optional} Working with pre-built Mender Yocto Images
+##### Working with pre-built Mender Yocto Images
 
 This section outlines the steps  involved in configuring and working directly with pre-built images. Mender Yocto images are available to download from the GCS bucket. If you have already generated a Mender Yocto build image from previous steps please proceed directly to the Mender Client Integration section
 
@@ -272,7 +277,7 @@ chmod +x ./mender-artifact
 * Copy the file out of the SDIMG or MENDER binary file:
 
 ```
-./mender-artifact cat gcp-mender-demo-image-raspberrypi3.sdimg:/opt/gcp/etc/gcp-config.sh > ./gcp-config.sh
+./mender-artifact cat gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh > ./gcp-config.sh
 ```
 
 
@@ -281,7 +286,7 @@ chmod +x ./mender-artifact
 * Update the file in the SDIMG or MENDER binary file:
 
 ```
-cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/opt/gcp/etc/gcp-config.sh
+cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh
 ```
 
 
@@ -449,7 +454,10 @@ export PROJECT=$(gcloud config list project --format "value(core.project)")
 gcloud iot devices create $DEVICE_ID --region=$CLOUD_REGION --project $PROJECT --registry=$REGISTRY_ID --public-key path=rsa_public.pem,type=RSA_PEM
 ```
 
-Once the device is created in IoT Core, the Firebase function deployed earlier will make REST API call to the Mender Server to preauthorize the device with the same public key credentials used to create the device in IoT Core. Once the preauthorization is complete the function will push a config update to Cloud IoT Core which will configure the mender client on the device with the specific IP address of the mender server.
+```
+ssh root@$DEVICE_IP /opt/gcp/usr/bin/activate_agent.py
+```
+Once the device is created in IoT Core, the Firebase function deployed earlier will make REST API call to the Mender Server to preauthorize the device with the same public key credentials used to create the device in IoT Core. Once the preauthorization and device activation steps are complete the function will push a config update to Cloud IoT Core which will configure the mender client on the device with the specific IP address of the mender server.
 
 ###### Step 5: Verify the Mender Client "heartbeat" in Mender Server and Cloud IoT Core
 
@@ -473,9 +481,7 @@ First lets download the mender artifact "gcp-mender-demo-image-raspberrypi3.mend
 
 ![image alt text](images/Mender-on8.png)
 
-Next you need to create a deployment and select the device which you want to deploy the artifact. From Mender Server click "Create Deployment" and select the target artifact as “release-2” and  
-
-group "all device" and click create deployment. Since you only have one device currently which is “Raspberry Pi3”. For various classes and types of devices that Mender supports you can create groups and apply the target artifacts accordingly (Eg: Raspberry Pi3, Beaglebone etc)
+Next you need to create a deployment and select the device which you want to deploy the artifact. From Mender Server click "Create Deployment" and select the target artifact as “release-2” and  group "all devices" and click create deployment. Since you only have one device currently which is “Raspberry Pi3”. For various classes and types of devices that Mender supports you can create groups and apply the target artifacts accordingly (Eg: Raspberry Pi3, Beaglebone etc)
 
 ![image alt text](images/Mender-on9.png)
 
