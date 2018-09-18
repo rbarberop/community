@@ -249,7 +249,7 @@ sudo dd if=/Users/<local PC path where you have your image downloaded>/gcp-mende
 ```
 
 
-##### {Optional} Working with pre-built Mender Yocto Images
+##### Working with pre-built Mender Yocto Images
 
 This section outlines the steps  involved in configuring and working directly with pre-built images. Mender Yocto images are available to download from the GCS bucket. If you have already generated a Mender Yocto build image from previous steps please proceed directly to the Mender Client Integration section
 
@@ -454,7 +454,10 @@ export PROJECT=$(gcloud config list project --format "value(core.project)")
 gcloud iot devices create $DEVICE_ID --region=$CLOUD_REGION --project $PROJECT --registry=$REGISTRY_ID --public-key path=rsa_public.pem,type=RSA_PEM
 ```
 
-Once the device is created in IoT Core, the Firebase function deployed earlier will make REST API call to the Mender Server to preauthorize the device with the same public key credentials used to create the device in IoT Core. Once the preauthorization is complete the function will push a config update to Cloud IoT Core which will configure the mender client on the device with the specific IP address of the mender server.
+```
+ssh root@$DEVICE_IP /opt/gcp/usr/bin/activate_agent.py
+```
+Once the device is created in IoT Core, the Firebase function deployed earlier will make REST API call to the Mender Server to preauthorize the device with the same public key credentials used to create the device in IoT Core. Once the preauthorization and device activation steps are complete the function will push a config update to Cloud IoT Core which will configure the mender client on the device with the specific IP address of the mender server.
 
 ###### Step 5: Verify the Mender Client "heartbeat" in Mender Server and Cloud IoT Core
 
@@ -478,9 +481,7 @@ First lets download the mender artifact "gcp-mender-demo-image-raspberrypi3.mend
 
 ![image alt text](images/Mender-on8.png)
 
-Next you need to create a deployment and select the device which you want to deploy the artifact. From Mender Server click "Create Deployment" and select the target artifact as “release-2” and  
-
-group "all device" and click create deployment. Since you only have one device currently which is “Raspberry Pi3”. For various classes and types of devices that Mender supports you can create groups and apply the target artifacts accordingly (Eg: Raspberry Pi3, Beaglebone etc)
+Next you need to create a deployment and select the device which you want to deploy the artifact. From Mender Server click "Create Deployment" and select the target artifact as “release-2” and  group "all devices" and click create deployment. Since you only have one device currently which is “Raspberry Pi3”. For various classes and types of devices that Mender supports you can create groups and apply the target artifacts accordingly (Eg: Raspberry Pi3, Beaglebone etc)
 
 ![image alt text](images/Mender-on9.png)
 
