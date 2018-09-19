@@ -1,4 +1,4 @@
-##### Build a Mender Yocto project OS image for Raspberry Pi3 device
+# Build a Mender Yocto project OS image for Raspberry Pi3 device
 
 These steps outline how to build a Yocto Project image for a Raspberry Pi3 device. 
 
@@ -12,21 +12,21 @@ Below are the instructions to build a custom Mender Yocto image for Raspberry Pi
 
 Use the *"cloud api shell" environment you used earlier.*
 
-1. Create a GCE instance for Mender Yocto Project OS builds:
+## Create a GCE instance for Mender Yocto Project OS builds:
 
 ```
 gcloud beta compute instances create "mender-ota-build" --project $PROJECT --zone "us-central1-c" --machine-type "n1-standard-16" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180405" --image-project "ubuntu-os-cloud" --boot-disk-size "150" --boot-disk-type=pd-ssd --boot-disk-device-name "mender-ota-build"
 ```
 
 
-2. SSH into the image and install the necessary updates required for the Yocto Project Builds
+## SSH into the image and install the necessary updates required for the Yocto Project Builds
 
 ```
 gcloud compute --project $PROJECT ssh --zone "us-central1-c" "mender-ota-build"
 ```
 
 
-3. Install the Mender Yocto custom image build including dependencies by downloading script from the below github repo and executing on the build server. 
+## Install the Mender Yocto custom image build including dependencies by downloading script from the below github repo and executing on the build server. 
 
 This step initially builds a custom image for Raspberry Pi device as well as mender artifact update which can be used to test the OTA feature of Mender. All images after the completion of the build are automatically uploaded into GCS bucket.
 
@@ -48,7 +48,6 @@ chmod +x ./mender-gcp-build.sh
 . ./mender-gcp-build.sh
 ```
 
-
 **Note:** *The build process will generally take anywhere from **45 minutes to 60 minutes** and will create custom embedded Linux image with all the necessary packages and dependencies to be able to connect to Google Cloud IoT Core. The output of the build will be (2) files which will be uploaded into Google Cloud Storage Bucket. *
 
 1. *gcp-mender-demo-image-raspberrypi3.sdimg - This will be the core image files which will be used by the client to connect to GCP IoT core and Mender Server. Copy of the same image file with ".bmap" and “.img” are also generated and uploaded to GCS bucket.*
@@ -57,31 +56,5 @@ chmod +x ./mender-gcp-build.sh
 
 4. This completes the build process, the next step is to provision the build to [new device](https://docs.mender.io/artifacts/provisioning-a-new-device) (Raspberry Pi3). The build image was copied automatically to the GCS bucket which was created earlier. 
 
-Download the newly built image to your local PC where you can write the image to SD card as outlined in the next step. Note: this is done only for the initial provisioning of the starter image to a new device. Updates from this point on are managed by Mender.
+You can now download the newly built image or artifact to your local PC where you can write the image to SD card or upload the artifact as outlined in the main tutorial.
 
-```
-gsutil cp gs//$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.img  /<local PC path where you want to write the image to>
-```
-
-
-5. Provisioning a new device (Writing the image to Raspberry Pi3 device)
-
-    * Insert the SD card into the SD card slot of your local PC where you have the "gcp-mender-demo-image-raspberrypi3.img" image downloaded.
-    * Unmount the drive (instructions below for Mac)
-
-```
-df  -h  (Use this command to determine where the drive is mounted)
-```
-```
-# on OS X: 
-diskutil unmountDisk /dev/disk3 (assuming /dev/disk 3 is SD card)
-```
-```
-# on Linux:
-umount <mount-path>
-```
-  	 
-Command to write the image to SD card and please adjust the local path to your .img file location. Depending on the image size it may take roughly 20 minutes so please be patient until the image is completely written to the SD card. You may also want to use the [Etcher](https://etcher.io/) GUI tool instead of the dd command line tool
-```
-sudo dd if=/Users/<local PC path where you have your image downloaded>/gcp-mender-demo-image-raspberrypi3.img of=/dev/disk2 bs=1m && sudo sync 
-```
