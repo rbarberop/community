@@ -36,7 +36,7 @@ import paho.mqtt.client as mqtt
 minimum_backoff_time = 1
 
 # The maximum backoff time before giving up, in seconds.
-MAXIMUM_BACKOFF_TIME = 60
+MAXIMUM_BACKOFF_TIME = 30
 
 # Whether to wait with exponential backoff before publishing.
 should_backoff = False
@@ -280,8 +280,8 @@ def main():
         if should_backoff:
             # If backoff time is too large, give up.
             if minimum_backoff_time > MAXIMUM_BACKOFF_TIME:
-                print('Exceeded maximum backoff time. Giving up.')
-                #  break
+                print('Reached maximum backoff time.')
+                #  here we don't want to break, as we are awaiting auth completion break
             else:
                 minimum_backoff_time *= 2
 

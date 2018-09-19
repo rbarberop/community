@@ -152,79 +152,39 @@ Congrats you just finished creating the Mender Server on Google Cloud Platform.
 
 The above steps are for self-managed Open Source Mender Management Server on GCP, Mender also provides fully managed [Hosted Mender service](https://mender.io/signup) .   
 
-The next section describes how to build a Yocto Project image for a raspberry Pi3 device.
+The next section describes how to use a Yocto Project image for a raspberry Pi3 device.
 
-#### Mender Build Server on GCP
+##### Working with pre-built Mender Yocto Images
 
-##### Build a Mender Yocto project OS image for Raspberry Pi3 device
+This section outlines the steps  involved in configuring and working directly with provided pre-built images.
 
-These steps outline how to build a Yocto Project image for a Raspberry Pi3 device. 
+If you would like to learn how to build your own images on GCE with Yocto, see these [extra instructions](https://github.com/Kcr19/community/tree/master/tutorials/mender_gcp_ota_demo/image).
 
-The [Yocto Project](https://www.yoctoproject.org/) is an open source collaboration project that helps developers create custom Linux-based systems for embedded products, regardless of the hardware architecture. 
-
-The build output includes a file that can be flashed to the device storage during initial provisioning, it has suffix ."sdimg. Additionally copies of the same image with ".img” and “.bmap” suffix are uploaded to GCS bucket.
-
-Yocto image builds generally take a while to complete. Generally instances with high CPU cores and memory along with faster disks such as SSD will help speed up the overall build process. Additionally, there are pre-built images for quick testing available in the GCS bucket which you can download and proceed directly to "Working with pre-built Mender Yocto Images" section
-
-Below are the instructions to build a custom Mender Yocto image for Raspberry Pi3 device. This image will have a number of requirements needed to communicate with IoT Core built in.
-
-Use the *"cloud api shell" environment you used earlier.*
-
-1. Create a GCE instance for Mender Yocto Project OS builds:
+Using an existing "cloud api shell" environment clone the source repository for this tutorial.
 
 ```
-gcloud beta compute instances create "mender-ota-build" --project $PROJECT --zone "us-central1-c" --machine-type "n1-standard-16" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180405" --image-project "ubuntu-os-cloud" --boot-disk-size "150" --boot-disk-type=pd-ssd --boot-disk-device-name "mender-ota-build"
+git clone https://github.com/Kcr19/community.git
 ```
 
-
-2. SSH into the image and install the necessary updates required for the Yocto Project Builds
-
-```
-gcloud compute --project $PROJECT ssh --zone "us-central1-c" "mender-ota-build"
-```
-
-
-3. Install the Mender Yocto custom image build including dependencies by downloading script from the below github repo and executing on the build server. 
-
-This step initially builds a custom image for Raspberry Pi device as well as mender artifact update which can be used to test the OTA feature of Mender. All images after the completion of the build are automatically uploaded into GCS bucket.
-
-Note that you are now switching to the "build server shell" environment, and not in the "cloud api shell" environment.
+We are now going to update the prebuilt image with some configuration specific for your project.
 
 ```
-export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe mender-ota-demo --format="value(networkInterfaces.accessConfigs[0].natIP)")
+bash community/tutorials/mender_gcp_ota_demo/image/update-image.sh
 ```
 
-```
-wget https://raw.githubusercontent.com/Kcr19/community/master/tutorials/mender_gcp_ota_demo/image/mender-gcp-build.sh
-```
+This will take a couple minutes to pull the default image, update with configuration to your project, and then upload it back to a bucket.
 
-```
-chmod +x ./mender-gcp-build.sh
-```
+To flash this image, we need to switch back to your local machine.
 
-```
-. ./mender-gcp-build.sh
-```
+You can use gsutil on your machine as suggested by the update script's output, or download this updated image from the console from the [storage browser](https://console.cloud.google.com/storage/browser); it will be in the {project}-mender-builds folder.
 
+###### Provisioning a new device (Writing the image to Raspberry Pi3 device)
 
-**Note:** *The build process will generally take anywhere from **45 minutes to 60 minutes** and will create custom embedded Linux image with all the necessary packages and dependencies to be able to connect to Google Cloud IoT Core. The output of the build will be (2) files which will be uploaded into Google Cloud Storage Bucket. *
+Note: You may also want to use the [Etcher](https://etcher.io/) GUI tool instead of the dd command line tool outlined below.
 
-1. *gcp-mender-demo-image-raspberrypi3.sdimg - This will be the core image files which will be used by the client to connect to GCP IoT core and Mender Server. Copy of the same image file with ".bmap" and “.img” are also generated and uploaded to GCS bucket.*
+Next you will:
 
-2. *gcp-mender-demo-image-raspberrypi3.mender - This will be the mender artifact file which you will upload to the mender server and deploy on the client as part of the OTA update process.*
-
-4. This completes the build process, the next step is to provision the build to [new device](https://docs.mender.io/artifacts/provisioning-a-new-device) (Raspberry Pi3). The build image was copied automatically to the GCS bucket which was created earlier. 
-
-Download the newly built image to your local PC where you can write the image to SD card as outlined in the next step. Note: this is done only for the initial provisioning of the starter image to a new device. Updates from this point on are managed by Mender.
-
-```
-gsutil cp gs//$PROJECT-mender-builds/gcp-mender-demo-image-raspberrypi3.img  /<local PC path where you want to write the image to>
-```
-
-
-5. Provisioning a new device (Writing the image to Raspberry Pi3 device)
-
-    * Insert the SD card into the SD card slot of your local PC where you have the "gcp-mender-demo-image-raspberrypi3.img" image downloaded.
+    * Insert the SD card into the SD card slot of your local PC where you have the "updated-demo-image-raspberrypi3.img" image downloaded.
     * Unmount the drive (instructions below for Mac)
 
 ```
@@ -239,54 +199,10 @@ diskutil unmountDisk /dev/disk3 (assuming /dev/disk 3 is SD card)
 umount <mount-path>
 ```
   	 
-Command to write the image to SD card and please adjust the local path to your .img file location. Depending on the image size it may take roughly 20 minutes so please be patient until the image is completely written to the SD card. You may also want to use the [Etcher](https://etcher.io/) GUI tool instead of the dd command line tool
+Command to write the image to SD card and please adjust the local path to your .img file location. Depending on the image size it may take roughly 20 minutes so please be patient until the image is completely written to the SD card. 
 ```
-sudo dd if=/Users/<local PC path where you have your image downloaded>/gcp-mender-demo-image-raspberrypi3.img of=/dev/disk2 bs=1m && sudo sync 
-```
-
-
-##### Working with pre-built Mender Yocto Images
-
-This section outlines the steps  involved in configuring and working directly with pre-built images. Mender Yocto images are available to download from the GCS bucket. If you have already generated a Mender Yocto build image from previous steps please proceed directly to the Mender Client Integration section
-
-1. Download the pre-built Mender Yocto Image from GCS bucket to local PC with access to terminal or console 
-
-    1. [gcp-mender-demo-image-raspberrypi3.img](https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.img) - Base or Core image
-
-    2. [gcp-mender-demo-image-raspberrypi3.mender](https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.mender) - Mender artifcat
-
-2. Update Raspberry Pi 3 Images with Google Cloud IoT Core settings
-
-Settings related to Google Cloud such as the REGISTRY_ID, REGION_ID and PROJECT_ID are stored in the image filesystem in */opt/gcp/etc/config-gcp.sh. *The values of these settings, as shown in this document are sample values. You will need to edit this file, and the instructions below, to match your settings.
-
-* Download the mender-artifact utility [note: this is a Linux-only binary, best used in Cloud Shell]
-
-```
-wget https://d1b0l86ne08fsf.cloudfront.net/mender-artifact/master/mender-artifact
-```
-
-```
-chmod +x ./mender-artifact
-```
-
-
-* Copy the file out of the SDIMG or MENDER binary file:
-
-```
-./mender-artifact cat gcp-mender-demo-image-raspberrypi3.img:/data/gcp/gcp-config.sh > ./gcp-config.sh
-```
-
-
-* Now edit the file *./gcp-config.sh* in your editor of choice and update the values to match your Google Cloud settings.
-
-* Update the file in the SDIMG or MENDER binary file:
-
-```
-cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh
-```
-
-
- 
+sudo dd if=/Users/<local PC path where you have your image downloaded>/updated-demo-image-raspberrypi3.img of=/dev/disk2 bs=1m && sudo sync 
+``` 
 
 Next you will configure the device to connect to Mender Management Server and Google IOT core with the same private/public key pair.
 
@@ -373,14 +289,10 @@ Note: be sure you associated Firebase with your cloud project as noted in "Befor
 
 Deploy Firebase Functions to subscribe to Pub/Sub topic "registration-events" which you created in the last step to [preauthorize](https://docs.mender.io/server-integration/preauthorizing-devices) IoT Core Devices with the Mender Server every time a new device is created in IoT Core
 
-Using an existing "cloud api shell" environment clone the source repository which contains the Firebase functions code
+Using the repo you cloned into your cloud shell earlier, switch to the functions directory:
 
 ```
-git clone https://github.com/Kcr19/community.git
-```
-
-```
-cd community/tutorials/mender_gcp_ota_demo/auth-function/functions
+cd ~/community/tutorials/mender_gcp_ota_demo/auth-function/functions
 ```
 
 ```
