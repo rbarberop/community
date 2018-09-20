@@ -1,0 +1,10 @@
+[Unit]
+Description=Starts the MQTT example for Google IOT Telemetry
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/opt/gcp/usr/bin/start-mqtt-example.sh
+
+[Install]
+WantedBy=multi-user.target
