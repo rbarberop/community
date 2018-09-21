@@ -231,31 +231,21 @@ gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notific
 
 ### Integrate IoT Core Device Lifecycle events and Mender Preauthorization
 
-You will configure Cloud IoT Core audit logs to route to a Cloud PubSub topic.
-
-From the Cloud console go to [stackdriver logging](https://console.cloud.google.com/logs/viewer) and click on "Exports" then create “export” and 
-
-select the drop-down menu at the end of the search bar, and choose "Convert to advanced filter" as shown in the below image
-
-![image alt text](images/Mender-on3.png)
-
-In the advanced filter text search field please enter the below filter and click "Submit Filter".
+Using the Cloud Shell environment you will configure Cloud IoT Core audit logs to route to a Cloud PubSub topic.
 
 ```
-resource.type="cloudiot_device"
+gcloud beta logging sinks create device-lifecyle \
+pubsub.googleapis.com/projects/$PROJECT/topics/registration-events \
+--log-filter='resource.type="cloudiot_device"
 (protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" OR
-protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")
+protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")' 
 ```
 
-Click the "Create Export" action at the top of the screen.
-
-![image alt text](images/Mender-on4.png)
-
-Under "Edit Export" section set the name for the sink to "device-lifecyle", select sink service as “Cloud Pub/Sub” and Sink Destination as “registration-events” as shown below
-
-![image alt text](images/Mender-on5.png)
-
-Click "Create Sink" button and you have completed this step.
+```
+gcloud beta pubsub topics add-iam-policy-binding registration-events \
+--member $(gcloud beta logging sinks describe device-lifecyle --format='value(writerIdentity)') \
+--role roles/pubsub.publisher
+```
 
 **Deploy Firebase Functions to call Mender Preauthorization API** 
 
