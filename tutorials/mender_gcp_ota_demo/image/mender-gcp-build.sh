@@ -78,6 +78,7 @@ gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.img
 cat >> conf/auto.conf <<-	EOF
 	MENDER_ARTIFACT_NAME = "release-2"
+	IMAGE_INSTALL_append = " python-docs-samples"
 EOF
 bitbake ${IMAGE}
 gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.mender -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.mender
