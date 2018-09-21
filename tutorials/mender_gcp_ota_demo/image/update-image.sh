@@ -1,5 +1,5 @@
 #! /bin/bash
-wget https://d1b0l86ne08fsf.cloudfront.net/mender-artifact/master/mender-artifact
+wget https://d1b0l86ne08fsf.cloudfront.net/mender-artifact/2.3.0/mender-artifact
 chmod +x mender-artifact
 wget https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.sdimg
 sudo apt install -y parted
