@@ -19,7 +19,7 @@ IMAGE_INSTALL_append = " \
                      python-grpcio-tools \
                      python-cryptography \
                      python-pyjwt \
-                     python-docs-samples-mqtt-example \
+                     python-docs-samples \
                      mender-gcp-delay-server-connection \
                      mender-google-activation-agent \
 "

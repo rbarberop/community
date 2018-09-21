@@ -12,9 +12,7 @@ SRCREV = "47a39ccedf3cfdaa7825269800af7bf1294cc79c"
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
-PACKAGES += "${PN}-mqtt-example"
-
-FILES_${PN}-mqtt-example = " \
+FILES_${PN} = " \
     /opt/gcp${bindir}/cloudiot_mqtt_example.py \
     /opt/gcp${bindir}/start-mqtt-example.sh \
 "
