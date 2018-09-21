@@ -7,7 +7,9 @@ date_published: 2018-09-25
 ---
 
 KC Rakam | Customer Engineer Specialist | Google Cloud<br>
-Preston Holmes | Solution Architect | Google Cloud
+Preston Holmes | Solution Architect | Google Cloud<br>
+Drew Moseley | Solution Architect | Mender<br>
+Eystein Stenberg | Product Manager | Mender<br>
 
 This tutorial demonstrates how to successfully deploy over-the-air (OTA) software update solution for embedded Linux devices using Mender on Google Cloud Platform.
 
