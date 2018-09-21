@@ -15,6 +15,7 @@ if [ ! -e /var/lib/mender/mender-agent.pem ]; then
     cd /tmp
     /usr/sbin/mender-keygen-client > /dev/null
     mv keys-client-generated/private.key /var/lib/mender/mender-agent.pem
-    chmod 600 /var/lib/mender/mender-agent.pem
+    openssl rsa -in /var/lib/mender/mender-agent.pem -pubout  -out /var/lib/mender/rsa_public.pem
+    chmod 600 /var/lib/mender/mender-agent.pem /var/lib/mender/rsa_public.pem
     rm -rf keys-client-generated/
 fi

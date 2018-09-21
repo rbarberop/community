@@ -305,11 +305,7 @@ export DEVICE_ID=$(ssh root@$DEVICE_IP /usr/share/mender/identity/mender-device-
 
 Note: You will be prompted several times for the root password which is "**mender_gcp_ota**"
 
-Extract the public key from the mender-agent.pem file on the device.
-
-```
-ssh root@$DEVICE_IP openssl rsa -in /var/lib/mender/mender-agent.pem -pubout  -out /var/lib/mender/rsa_public.pem
-```
+Extract the public key from the device.
 
 ```
 scp root@$DEVICE_IP:/var/lib/mender/rsa_public.pem ./rsa_public.pem
