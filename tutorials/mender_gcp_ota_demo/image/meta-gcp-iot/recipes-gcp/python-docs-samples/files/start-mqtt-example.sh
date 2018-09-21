@@ -6,6 +6,11 @@ if [ ! -e /data/gcp/gcp-config.sh ]; then
     exit 1
 fi
 
+# Wait for Mender/GCP preauthorization to complete
+while [ ! -e /data/mender/preauth_true ] ; do
+    sleep 30
+done
+
 GCP_DEVICE_ID=$(/usr/share/mender/identity/mender-device-identity | grep google_iot_id= | cut -d= -f2)
 source /data/gcp/gcp-config.sh
 python /opt/gcp/usr/bin/cloudiot_mqtt_example.py \
