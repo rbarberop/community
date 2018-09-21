@@ -27,3 +27,4 @@ do_install() {
 }
 
 RDEPENDS_${PN} += "bash python gcp-config"
+DEPENDS += "gcp-root-certs"
