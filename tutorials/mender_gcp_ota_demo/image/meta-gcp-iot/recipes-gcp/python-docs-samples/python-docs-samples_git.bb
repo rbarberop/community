@@ -32,24 +32,4 @@ do_install() {
 }
 
 RDEPENDS_${PN} += "bash python gcp-config mender-google-activation-agent"
-
-inherit deploy
-
-do_deploy() {
-    if [ -z "${PROJECT_ID}" ]; then
-       echo "Error. PROJECT_ID bitbake/shell variable unset." >&2
-       exit 1
-    fi
-    if [ -z "${REGION_ID}" ]; then
-       echo "Error. REGION_ID bitbake/shell variable unset." >&2
-       exit 1
-    fi
-    if [ -z "${REGISTRY_ID}" ]; then
-       echo "Error. REGISTRY_ID bitbake/shell variable unset." >&2
-       exit 1
-    fi
-    
-    install -d ${DEPLOYDIR}/persist/gcp
-    install -m 0700 ${S}/iot/api-client/mqtt_example/resources/roots.pem ${DEPLOYDIR}/persist/gcp
-}
-addtask do_deploy after do_install before do_package
+DEPENDS += "gcp-root-certs"

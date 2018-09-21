@@ -4,6 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
+ExecStartPre=/opt/gcp/usr/bin/wait-for-timesync
 ExecStart=/opt/gcp/usr/bin/start-mqtt-example.sh
 
 [Install]
