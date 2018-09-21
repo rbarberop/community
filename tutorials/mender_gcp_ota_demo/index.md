@@ -7,7 +7,9 @@ date_published: 2018-09-25
 ---
 
 KC Rakam | Customer Engineer Specialist | Google Cloud<br>
-Preston Holmes | Solution Architect | Google Cloud
+Preston Holmes | Solution Architect | Google Cloud<br>
+Drew Moseley | Solution Architect | Mender<br>
+Eystein Stenberg | Product Manager | Mender<br>
 
 This tutorial demonstrates how to successfully deploy over-the-air (OTA) software update solution for embedded Linux devices using Mender on Google Cloud Platform.
 
@@ -303,11 +305,7 @@ export DEVICE_ID=$(ssh root@$DEVICE_IP /usr/share/mender/identity/mender-device-
 
 Note: You will be prompted several times for the root password which is "**mender_gcp_ota**"
 
-Extract the public key from the mender-agent.pem file on the device.
-
-```
-ssh root@$DEVICE_IP openssl rsa -in /var/lib/mender/mender-agent.pem -pubout  -out /var/lib/mender/rsa_public.pem
-```
+Extract the public key from the device.
 
 ```
 scp root@$DEVICE_IP:/var/lib/mender/rsa_public.pem ./rsa_public.pem
