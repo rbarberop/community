@@ -7,7 +7,9 @@ date_published: 2018-09-25
 ---
 
 KC Rakam | Customer Engineer Specialist | Google Cloud<br>
-Preston Holmes | Solution Architect | Google Cloud
+Preston Holmes | Solution Architect | Google Cloud<br>
+Drew Moseley | Solution Architect | Mender<br>
+Eystein Stenberg | Product Manager | Mender<br>
 
 This tutorial demonstrates how to successfully deploy over-the-air (OTA) software update solution for embedded Linux devices using Mender on Google Cloud Platform.
 
@@ -305,11 +307,7 @@ export DEVICE_ID=$(ssh root@$DEVICE_IP /usr/share/mender/identity/mender-device-
 
 Note: You will be prompted several times for the root password which is "**mender_gcp_ota**"
 
-Extract the public key from the mender-agent.pem file on the device.
-
-```
-ssh root@$DEVICE_IP openssl rsa -in /var/lib/mender/mender-agent.pem -pubout  -out /var/lib/mender/rsa_public.pem
-```
+Extract the public key from the device.
 
 ```
 scp root@$DEVICE_IP:/var/lib/mender/rsa_public.pem ./rsa_public.pem
@@ -319,7 +317,7 @@ scp root@$DEVICE_IP:/var/lib/mender/rsa_public.pem ./rsa_public.pem
 Now create an IoT Core Device with the public key (rsa_public.pem) which you extracted in the last step (Please make sure you are in the same directory where you have extracted the "rsa_public.pem" file). Run the following command from the same local console or terminal where you have ssh access to the device. You may need to set your project in gcloud first.
 
 ```
-gcloud config set project <project-id>
+gcloud config set project <your project>
 export REGISTRY_ID=mender-demo
 export CLOUD_REGION=us-central1 # or change to an alternate region;
 export PROJECT=$(gcloud config list project --format "value(core.project)")
@@ -335,9 +333,9 @@ Once the device is created in IoT Core, the Firebase function deployed earlier w
 
 This may take a couple minutes as the client on the device has backed off from constantly trying to reconnect to IoT Core. You can monitor the IoT Core console "Configuration & state history" pane to see when the config has been pushed and acknoledged by the device.
 
-### Verify the device "heartbeat" in Mender Server and Cloud IoT Core
+### Verify the device "Heartbeat" in Mender Server and Cloud IoT Core
 
-You can confirm the same from the Google Cloud Console as below under latest activity.
+You can confirm the same from the Google Cloud Console as below under device details.
 
 ![image alt text](images/Mender-on6.png)
 
@@ -351,9 +349,9 @@ This confirms the device has successfully connected to IoT core and Mender Serve
 
 ## Push an OTA software update
 
-As part of the last step let's perform Over-the-Air (OTA) update by deploying a mender artifact from Mender Server to client. 
+As part of the last step let's perform Over-the-Air (OTA) update by deploying a mender artifact from Mender Server to client. Mender artifact includes a software update of [MQTT for Google Cloud IoT Core example](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/iot/api-client/mqtt_example/cloudiot_mqtt_example.py) which will be deployed and executed on device boot.
 
-First lets download the mender artifact "gcp-mender-demo-image-raspberrypi3.mender" part of the Build step from the GCS bucket (or download the sample from [here](https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.mender)  and lets upload to the Mender Server under artifacts as shown below.
+First lets download the mender artifact "gcp-mender-demo-image-raspberrypi3.mender" part of the Build step from the GCS bucket (or download the sample from [here](https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.mender) and lets upload to the Mender Server under artifacts as shown below. 
 
 ![image alt text](images/Mender-on8.png)
 
@@ -365,7 +363,10 @@ Deployment completion may take a moment as the update agent checks in periodical
 
 ![image alt text](images/Mender-on10.png)
 
-Once the deployment is finished you should be able to see the deployment successful from the Mender Dashboard and the new release of the software update should be deployed on the device which can be confirmed by logging into the device and running "mender -show-artifact" should output “release-2”.
+Once the deployment is finished you should be able to see the deployment successful from the Mender Dashboard and the new release of the software update should be deployed on the device which can be confirmed by logging into the device and running "mender -show-artifact" should output “release-2”. Additionally you can login into the Google Cloud Console and can confirm the telemetry events received under device details.
+
+![image alt text](images/Mender-on12.png)
+
 
 This completes the tutorial where you have successfully deployed Mender OTA solution on Google Cloud Platform including building Mender Yocto custom embedded OS image for Raspberry Pi device and integrated with Google Cloud IoT Core solution. 
 
