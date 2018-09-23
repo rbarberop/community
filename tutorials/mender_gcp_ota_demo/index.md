@@ -319,7 +319,7 @@ scp root@$DEVICE_IP:/var/lib/mender/rsa_public.pem ./rsa_public.pem
 Now create an IoT Core Device with the public key (rsa_public.pem) which you extracted in the last step (Please make sure you are in the same directory where you have extracted the "rsa_public.pem" file). Run the following command from the same local console or terminal where you have ssh access to the device. You may need to set your project in gcloud first.
 
 ```
-gcloud config set <project>
+gcloud config set project <project-id>
 export REGISTRY_ID=mender-demo
 export CLOUD_REGION=us-central1 # or change to an alternate region;
 export PROJECT=$(gcloud config list project --format "value(core.project)")
