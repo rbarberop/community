@@ -233,14 +233,14 @@ gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notific
 
 Using the Cloud Shell environment you will configure Cloud IoT Core audit logs to route to a Cloud PubSub topic.
 
+Create a log export for IoT Core device creation events to PubSub:
 ```
 gcloud beta logging sinks create device-lifecyle \
 pubsub.googleapis.com/projects/$PROJECT/topics/registration-events \
---log-filter='resource.type="cloudiot_device"
-(protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" OR
-protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")' 
+--log-filter='resource.type="cloudiot_device" protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice"' 
 ```
 
+Give the log exporter system-account permission to publish to your topic:
 ```
 gcloud beta pubsub topics add-iam-policy-binding registration-events \
 --member $(gcloud beta logging sinks describe device-lifecyle --format='value(writerIdentity)') \
