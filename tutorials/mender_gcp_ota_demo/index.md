@@ -225,9 +225,9 @@ Using the Cloud Shell environment, create a Cloud IoT Core registry and Cloud Pu
 
 ```
 export REGISTRY_ID=mender-demo
-gcloud pubsub topics create mender-events
+gcloud pubsub topics create iot-telemetry
 gcloud pubsub topics create registration-events
-gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notification-config=subfolder="",topic=mender-events
+gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notification-config=subfolder="",topic=iot-telemetry
 ```
 
 
@@ -235,14 +235,14 @@ gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notific
 
 Using the Cloud Shell environment you will configure Cloud IoT Core audit logs to route to a Cloud PubSub topic.
 
+Create a log export for IoT Core device creation events to PubSub:
 ```
 gcloud beta logging sinks create device-lifecyle \
 pubsub.googleapis.com/projects/$PROJECT/topics/registration-events \
---log-filter='resource.type="cloudiot_device"
-(protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice" OR
-protoPayload.methodName="google.cloud.iot.v1.DeviceManager.UpdateDevice")' 
+--log-filter='resource.type="cloudiot_device" protoPayload.methodName="google.cloud.iot.v1.DeviceManager.CreateDevice"' 
 ```
 
+Give the log exporter system-account permission to publish to your topic:
 ```
 gcloud beta pubsub topics add-iam-policy-binding registration-events \
 --member $(gcloud beta logging sinks describe device-lifecyle --format='value(writerIdentity)') \
@@ -265,7 +265,9 @@ firebase login --no-localhost
 firebase use --add $PROJECT
 ```
 
-Let's set the environment variables for the functions. Replace the IP address for mender.url with the external IP address of your mender server
+Let's set the environment variables for the functions. Replace the IP address for mender.url with the external IP address of your mender server.
+
+Note: you may be prompted to verify your compute instance zone, the default may be incorrect, so answer 'n'.
 
 ```
 export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe mender-ota-demo --project $PROJECT --format="value(networkInterfaces.accessConfigs[0].natIP)")
@@ -349,6 +351,12 @@ This confirms the device has successfully connected to IoT core and Mender Serve
 
 As part of the last step let's perform Over-the-Air (OTA) update by deploying a mender artifact from Mender Server to client. Mender artifact includes a software update of [MQTT for Google Cloud IoT Core example](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/iot/api-client/mqtt_example/cloudiot_mqtt_example.py) which will be deployed and executed on device boot.
 
+Create a subscription that we can use to verify this sample gets deployed:
+
+```
+gcloud beta pubsub subscriptions create test-reader --topic iot-telemetry
+```
+
 First lets download the mender artifact "gcp-mender-demo-image-raspberrypi3.mender" part of the Build step from the GCS bucket (or download the sample from [here](https://storage.googleapis.com/mender-gcp-ota-images/gcp-mender-demo-image-raspberrypi3.mender) and lets upload to the Mender Server under artifacts as shown below. 
 
 ![image alt text](images/Mender-on8.png)
@@ -357,11 +365,21 @@ Next you need to create a deployment and select the device which you want to dep
 
 ![image alt text](images/Mender-on9.png)
 
-Deployment completion may take a moment as the update agent checks in periodically. Progress can be monitored from the Mender Server Dashboard by clicking on in progress deployments
+While the deployment completes, you can verify that the current image is not sending data:
+
+```
+gcloud beta pubsub subscriptions pull test-reader --limit 100 --auto-ack
+```
+
+Deployment completion may take some time as the update agent checks in periodically and writes the updated partition. Progress can be monitored from the Mender Server Dashboard by clicking on in progress deployments.
 
 ![image alt text](images/Mender-on10.png)
 
-Once the deployment is finished you should be able to see the deployment successful from the Mender Dashboard and the new release of the software update should be deployed on the device which can be confirmed by logging into the device and running "mender -show-artifact" should output “release-2”. Additionally you can login into the Google Cloud Console and can confirm the telemetry events received under device details.
+Once the deployment is finished you should be able to see the deployment successful from the Mender Dashboard and the new release of the software update should be deployed on the device which can be confirmed by logging into the device and running "mender -show-artifact" should output “release-2”. Additionally you can confirm the telemetry events are being sent by the software update by repeating the pull command:
+
+```
+gcloud beta pubsub subscriptions pull test-reader --limit 100 --auto-ack
+```
 
 ![image alt text](images/Mender-on12.png)
 
