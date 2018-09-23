@@ -259,11 +259,13 @@ Using the repo you cloned into your cloud shell earlier, switch to the functions
 
 ```
 cd ~/community/tutorials/mender_gcp_ota_demo/auth-function/functions
-firebase login
+firebase login --no-localhost
 firebase use --add $PROJECT
 ```
 
-Let's set the environment variables for the functions. Replace the IP address for mender.url with the external IP address of your mender server
+Let's set the environment variables for the functions. Replace the IP address for mender.url with the external IP address of your mender server.
+
+Note: you may be prompted to verify your compute instance zone, the default may be incorrect, so answer 'n'.
 
 ```
 export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe mender-ota-demo --project $PROJECT --format="value(networkInterfaces.accessConfigs[0].natIP)")
