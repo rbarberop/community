@@ -67,18 +67,18 @@ export REGION_ID='us-central1'
 export REGISTRY_ID='mender-demo'
 export IMAGE='gcp-mender-demo-image'
 export MACHINE='raspberrypi3'
-
 # Ensure that the GCP variables defined above are passed into the bitbake environment
 export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE PROJECT_ID REGION_ID REGISTRY_ID"
-
+export VERSION=`date +%s`
 bitbake ${IMAGE}
-cp ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img
-gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg
-gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.sdimg.bmap
-gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.img
-cat >> conf/auto.conf <<-	EOF
-	MENDER_ARTIFACT_NAME = "release-2"
-	IMAGE_INSTALL_append = " python-docs-samples"
+cp ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg ./tmp/deploy/images/${MACHINE}/
+${IMAGE}-${MACHINE}-*.img
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}-${VERSION}.sdimg
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.sdimg.bmap -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}-${VERSION}.sdimg.bmap
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.img -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}-${VERSION}.img
+cat >> conf/auto.conf <<-       EOF
+        MENDER_ARTIFACT_NAME = "release-${VERSION}"
+				IMAGE_INSTALL_append = " python-docs-samples"
 EOF
 bitbake ${IMAGE}
-gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.mender -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}.mender
+gsutil cp $(find ./tmp/deploy/images/${MACHINE}/${IMAGE}-${MACHINE}-*.mender -type f) gs://$PROJECT_ID-mender-builds/${IMAGE}-${MACHINE}-${VERSION}.mender
