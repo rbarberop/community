@@ -1,7 +1,6 @@
 [Unit]
 Description=waits for config from IoT core, then activates mender agent
 After=multi-user.target
-ConditionPathExists=!/data/mender/preauth_true
 
 [Service]
 Type=idle
