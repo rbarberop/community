@@ -223,9 +223,9 @@ Using the Cloud Shell environment, create a Cloud IoT Core registry and Cloud Pu
 
 ```
 export REGISTRY_ID=mender-demo
-gcloud pubsub topics create mender-events
+gcloud pubsub topics create iot-telemetry
 gcloud pubsub topics create registration-events
-gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notification-config=subfolder="",topic=mender-events
+gcloud iot registries create $REGISTRY_ID --region=$CLOUD_REGION --event-notification-config=subfolder="",topic=iot-telemetry
 ```
 
 
