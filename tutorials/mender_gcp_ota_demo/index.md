@@ -331,9 +331,9 @@ Once the device is created in IoT Core, the Firebase function deployed earlier w
 
 This may take a couple minutes as the client on the device has backed off from constantly trying to reconnect to IoT Core. You can monitor the IoT Core console "Configuration & state history" pane to see when the config has been pushed and acknoledged by the device.
 
-### Verify the device "Heartbeat & Config" in Mender Server and Cloud IoT Core
+### Verify the device "Heartbeat" in Mender Server and Cloud IoT Core
 
-You can confirm the same from the Google Cloud Console as below under Configuration & state history.
+You can confirm the same from the Google Cloud Console as below under device details.
 
 ![image alt text](images/Mender-on6.png)
 
