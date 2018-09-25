@@ -16,7 +16,7 @@ export PROJECT_ID=${PROJECT}
 export REGION_ID=us-central1
 export REGISTRY_ID=mender-demo
 EOF
-echo "sample image download complete, Congure image with your project setting..."
+echo "sample image download complete, configuring image with your project settings..."
 cat ./gcp-config.sh | ./mender-artifact cp gcp-mender-demo-image-raspberrypi3.sdimg:/data/gcp/gcp-config.sh
 echo "Image configured, uploading to bucket..."
 gsutil cp gcp-mender-demo-image-raspberrypi3.sdimg gs://$PROJECT-mender-builds/updated-demo-image-raspberrypi3.img
