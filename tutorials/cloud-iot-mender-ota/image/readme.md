@@ -37,7 +37,7 @@ export GCP_IOT_MENDER_DEMO_HOST_IP_ADDRESS=$(gcloud compute instances describe m
 ```
 
 ```
-wget https://raw.githubusercontent.com/GoogleCloudPlatform/community/master/tutorials/mender_gcp_ota_demo/image/mender-gcp-build.sh
+wget https://raw.githubusercontent.com/GoogleCloudPlatform/community/master/tutorials/cloud-iot-mender-ota/image/mender-gcp-build.sh
 ```
 
 ```

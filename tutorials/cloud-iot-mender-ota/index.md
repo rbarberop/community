@@ -129,7 +129,7 @@ gsutil mb -l $CLOUD_REGION gs://$PROJECT-mender-builds
 * Step 1: Create a Google Cloud Compute Engine and run a [startup script](https://cloud.google.com/compute/docs/startupscript) to install various dependencies including Docker, as well as installing and starting the [Mender Server](https://docs.mender.io/administration/production-installation).
 
 ```
-gcloud beta compute --project $PROJECT instances create "mender-ota-demo" --zone "us-central1-c" --machine-type "n1-standard-2" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --metadata=startup-script-url=https://raw.githubusercontent.com/GoogleCloudPlatform/community/master/tutorials/mender_gcp_ota_demo/server/mender_server_install.sh --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180814" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "mender-ota-demo"
+gcloud beta compute --project $PROJECT instances create "mender-ota-demo" --zone "us-central1-c" --machine-type "n1-standard-2" --subnet "default" --maintenance-policy "MIGRATE" --scopes "https://www.googleapis.com/auth/cloud-platform" --metadata=startup-script-url=https://raw.githubusercontent.com/GoogleCloudPlatform/community/master/tutorials/cloud-iot-mender-ota/server/mender_server_install.sh --min-cpu-platform "Automatic" --tags "https-server" --image "ubuntu-1604-xenial-v20180814" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "mender-ota-demo"
 ```
 
 
@@ -159,7 +159,7 @@ The next section describes how to use a Yocto Project image for a raspberry Pi3 
 
 This section outlines the steps  involved in configuring and working directly with provided pre-built images.
 
-If you would like to learn how to build your own images on GCE with Yocto, see these [extra instructions](https://github.com/GoogleCloudPlatform/community/tree/master/tutorials/mender_gcp_ota_demo/image).
+If you would like to learn how to build your own images on GCE with Yocto, see these [extra instructions](https://github.com/GoogleCloudPlatform/community/tree/master/tutorials/cloud-iot-mender-ota/image).
 
 Using the existing Cloud Shell environment clone the source repository for this tutorial.
 
@@ -170,7 +170,7 @@ git clone https://github.com/GoogleCloudPlatform/community.git
 You now will update the prebuilt image with some configuration specific for your project.
 
 ```
-bash community/tutorials/mender_gcp_ota_demo/image/update-image.sh
+bash community/tutorials/cloud-iot-mender-ota/image/update-image.sh
 ```
 
 This will take a couple minutes to pull the default image, update with configuration for your project, and then upload it back to one of the buckets you created earlier.
@@ -260,7 +260,7 @@ Deploy Firebase Functions to subscribe to Pub/Sub topic "registration-events" wh
 Using the repo you cloned into your cloud shell earlier, switch to the functions directory:
 
 ```
-cd ~/community/tutorials/mender_gcp_ota_demo/auth-function/functions
+cd ~/community/tutorials/cloud-iot-mender-ota/auth-function/functions
 firebase login --no-localhost
 firebase use --add $PROJECT
 ```
@@ -392,4 +392,4 @@ Since this tutorial uses multiple GCP components please ensure to delete the clo
 
 ## Next steps
 
-If you would like to see how to further update the images by modifying the device software and doing an additional deployment, see the [extra instructions on building your own images](https://github.com/GoogleCloudPlatform/community/tree/master/tutorials/mender_gcp_ota_demo/image)
+If you would like to see how to further update the images by modifying the device software and doing an additional deployment, see the [extra instructions on building your own images](https://github.com/GoogleCloudPlatform/community/tree/master/tutorials/cloud-iot-mender-ota/image)
