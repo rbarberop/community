@@ -17,8 +17,7 @@ import (
 
 // enum to json note: https://gist.github.com/lummie/7f5c237a17853c031a57277371528e87
 
-var pClient *pubsub.Client
-var fClient *firestore.Client
+var globalManager *jobManager
 
 type JobState int
 
@@ -40,32 +39,44 @@ type Job struct {
 	// can add a requester, source IP etc if needed
 }
 
-func init() {
-	// setup pubsub
-	// setup firestore
+type jobManager struct {
+	pClient *pubsub.Client
+	fClient *firestore.Client
+}
+
+func newJobManager(ctx context.Context) (m *jobManager, err error) {
+
 	projectID, exists := os.LookupEnv("GOOGLE_CLOUD_PROJECT")
 	if !exists {
 		log.Fatalf("Set project ID via GOOGLE_CLOUD_PROJECT env variable.")
 	}
 
-	ctx := context.Background()
-	var err error
-
-	fClient, err = firestore.NewClient(ctx, projectID)
+	m = &jobManager{}
+	m.fClient, err = firestore.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Cannot create Firestore client: %v", err)
 	}
 
-	pClient, err = pubsub.NewClient(context.Background(), projectID)
+	m.pClient, err = pubsub.NewClient(context.Background(), projectID)
 	if err != nil {
 		log.Fatalf("Cannot create PubSub Client %v", err)
 	}
+	return m, nil
 }
 
-func AddJob(j *Job) (id string, err error) {
+func init() {
+	var err error
+	ctx := context.Background()
+	globalManager, err = newJobManager(ctx)
+	if err != nil {
+		log.Fatalf("Cannot initialize job management")
+	}
+}
+
+func addJob(j *Job) (id string, err error) {
 	ctx := context.Background()
 
-	_, err = fClient.Collection("jobs").Doc(j.ID).Set(ctx, j)
+	_, err = globalManager.fClient.Collection("jobs").Doc(j.ID).Set(ctx, j)
 	if err != nil {
 		log.Printf("error writing job: %s", err)
 		return "", err
@@ -81,7 +92,7 @@ func AddJob(j *Job) (id string, err error) {
 		Attributes: map[string]string{"job-id": j.ID},
 		Data:       js,
 	}
-	result := pClient.Topic("jobs").Publish(ctx, task)
+	result := globalManager.pClient.Topic("jobs").Publish(ctx, task)
 	// Block until the result is returned and a server-generated
 	// ID is returned for the published message.
 	msgID, err := result.Get(ctx)
@@ -93,8 +104,8 @@ func AddJob(j *Job) (id string, err error) {
 	return j.ID, nil
 }
 
-func GetJob(id string) (j *Job, err error) {
-	dsnap, err := fClient.Collection("jobs").Doc(id).Get(context.Background())
+func getJob(id string) (j *Job, err error) {
+	dsnap, err := globalManager.fClient.Collection("jobs").Doc(id).Get(context.Background())
 	// TODO need a 404 condition
 	if err != nil {
 		log.Printf("error getting job: %s", err)
@@ -118,7 +129,7 @@ func Jobs(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Get")
 		p := strings.Split(r.URL.Path, "/")
 		id := p[len(p)-1]
-		j, err := GetJob(id)
+		j, err := getJob(id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -153,7 +164,7 @@ func Jobs(w http.ResponseWriter, r *http.Request) {
 			Task:       m,
 		}
 
-		_, err = AddJob(j)
+		_, err = addJob(j)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
