@@ -1,6 +1,6 @@
 ---
 title: Running a Cloud MQTT bridge in Kubernetes
-description: Bridge MQTT messages between a cluster and Cloud IoT Core with Mosquitto
+description: Bridge MQTT messages between a Kubernetes cluster and Cloud IoT Core with Mosquitto
 author: ptone
 tags: Kubernetes, iot, Internet of Things, cloud iot core
 date_published: 2019-07-01
